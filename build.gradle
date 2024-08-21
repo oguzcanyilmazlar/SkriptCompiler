@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'me.acablade.skcompile'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": project.name,
+                "Implementation-Version": version,
+                "Main-Class": "me.acablade.skcompile.Main")
+    }
+}
+
+shadowJar {
+    archiveFileName = "skcompile.jar"
+}
+
+build {
+    dependsOn shadowJar
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm
+    implementation group: 'org.ow2.asm', name: 'asm', version: '9.7'
+    implementation("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+
+}
+
+test {
+    useJUnitPlatform()
+}
